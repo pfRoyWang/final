@@ -2,7 +2,7 @@ const express = require('express');
 const request = require('request');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
-
+const port = process.env.PORT || 8080;
 
 var app = express();
 
@@ -110,6 +110,6 @@ var getWeather = (address, callback) => {
 
 
 
-app.listen(8080,() =>{
+app.listen(port,() =>{
 	console.log('Server is up on the port 8080');
 });
