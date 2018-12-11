@@ -29,14 +29,26 @@ app.get('/fetch', (request, response) => {
 	});	
 });
 
+var fetchimg = (keyword,callback)=>{
+	request({
+		url:'https://pixabay.com/api/?key=10969107-9c242d8d1bedd2bd2d811fb1d&q='+keyword+'&image_type=photo&pretty=true',
+		json:true
+	},(response,body)=>{
+		callback(undefined, {
+  			img:body.body.hits[0].largeImageURL
+        });
+	});
+};
+
+
 app.post('/fetch',function(request,response){
-	var keyword = request.body.fetch;
-	fetchimg((errorMessage, results) => {
+	var keyword = request.body.keyword;
+	fetchimg(keyword,(errorMessage, results) => {
 		if (errorMessage){
 			console.log(errorMessage);
 		} else {
 			img = results.img;
-			response.send(img);
+			response.redirect(img)
 		}
 	}); 
 });
@@ -95,24 +107,6 @@ var getWeather = (address, callback) => {
     });
 };
 
-var fetchimg = (callback)=>{
-	var fetch = request({
-		//url:'https://pixabay.com/api/?key=10969107-9c242d8d1bedd2bd2d811fb1d&q='+encodeURIComponent(keyword)+'&image_type=photo',
-		url:'https://pixabay.com/api/?key=10969107-9c242d8d1bedd2bd2d811fb1d&q=yellow+flowers&image_type=photo',
-		json:true
-	},(error,response,body)=>{
-		if(error){
-			callback('Cannot connect to pixabay');
-		}else if (body.status =='ZERO_RESULTS'){
-			callback('Cannot find the requested image')
-		}else if(body.status=='OK'){
-			console.log(body);
-			callback(undefined,{
-				img:body.hits.largeImageURL
-			})
-		}
-	});
-};
 
 
 
